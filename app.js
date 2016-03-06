@@ -16,11 +16,6 @@ app.use(bodyParser());
 
 app.use(express.static(path.join(__dirname, 'bower_components')));
 
-
-
-console.log('test haha');
-
-
 //define routes
 
 app.use(require('./todos'));
