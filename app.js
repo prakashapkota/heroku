@@ -18,6 +18,7 @@ app.use(express.static(path.join(__dirname, 'bower_components')));
 
 //define routes
 
+
 app.use(require('./todos'));
 
 //start the server
@@ -25,5 +26,5 @@ var port = process.env.PORT || 1337;
 
 app.listen(port, function(){
 	console.log('test express on: ' +port);
-})
+});
 
