@@ -1,0 +1,22 @@
+{
+  "name": "expressApp",
+  "description": "",
+  "main": "app.js",
+  "authors": [
+    "Prakash Shapkota <prakash.shapkota@marcelww.fr>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/prakashapkota/heroku",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/js/libs/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.1.1"
+  }
+}

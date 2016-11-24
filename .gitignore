@@ -1,0 +1,9 @@
+# Front ###########################################
+
+public/js/libs/*
+public/js/libs/
+public/js/libs
+
+node_modules/*
+node_modules/
+node_modules

@@ -5,26 +5,77 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>My APP</title>
-        <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.css">
-        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="js/libs/bootstrap/dist/css/bootstrap.css">
+        <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
         <div class="container">
         	<h1><%= title %></h1>
         	
-            <ul>
+            <ul class="list_ul">
                 <% for(var i = 0; i < items.length; i++) { %>
-                    <li> <%= items[i].desc %></li>
+                    <li ><%= items[i].id %>.<p class="list_text" contenteditable="true"> <%= items[i].desc %></p> <a href='remove/<%= items[i].id %>' class=" list_delete btn btn-danger">Delete</a> <a class="list_modify btn btn-warning" href='modify/<%= items[i].id %>/<%= items[i].desc %>'>Validate</a> </li>
                 <% } %>
 
             </ul>
 
-            <form action="/add" method="post">
+            <form class="addListForm" action="/add" method="post">
                 <input type="text" name="newItem">
-                <input type="submit">
+                <input type="submit" class="btn btn-primary">
             </form>
         </div>
-        <script src="jquery/dist/jquery.min.js"></script>
-        <script src="bootstrap/dist/js/bootstrap.js"></script>
+        <script src="js/libs/jquery/dist/jquery.min.js"></script>
+        <script src="js/libs/bootstrap/dist/js/bootstrap.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $('.list_delete').on('click', function(e){
+                    e.preventDefault();
+                    var postUrl = $(e.currentTarget).attr('href').split('/')[0];
+                    var parameters = $(e.currentTarget).attr('href').split('/')[1];
+                    $.ajax({
+                        method: "POST",
+                        url: postUrl,
+                        data: { id: parameters }
+                    })
+                    .done(function( msg ) {
+                        var msgJson = JSON.parse(msg);
+                        if(msgJson.deletedItem != "not_found"){
+                            console.log( msgJson.deletedItem );
+                            $(e.currentTarget).parent('li').remove();
+                        }
+                        
+                    });
+                });
+
+                $('.list_text').on('input', function(){
+                    var $list_modify = $(this).parent('li').find('.list_modify');
+                    var baseHref = $list_modify.attr('href').split('/')[0] + '/' + $list_modify.attr('href').split('/')[1];
+                    $list_modify.attr( 'href', baseHref +'/'+ $(this).text() );
+                    $list_modify.show();
+                });
+
+                $('.list_modify').on('click', function(e){
+                    e.preventDefault();
+                    var postUrl = $(e.currentTarget).attr('href').split('/')[0];
+                    var id = $(e.currentTarget).attr('href').split('/')[1];
+                    var desc = $(e.currentTarget).attr('href').split('/')[2];
+                    $.ajax({
+                        method: "POST",
+                        url: postUrl,
+                        data: { id: id, desc: desc }
+                    })
+                    .done(function( msg ) {
+                        var msgJson = JSON.parse(msg);
+                        if(msgJson.deletedItem != "not_found"){
+                            console.log( msgJson.modifiedItem );
+                            $(e.currentTarget).hide();
+                        }
+                        
+                    });
+                });
+
+            });
+        </script>
     </body>
 </html>
